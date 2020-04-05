@@ -1,0 +1,274 @@
+CREATE SCHEMA IF NOT EXISTS `mydb`;
+
+SET SQL_SAFE_UPDATES = 0;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Student` (
+  `Student_Number` VARCHAR(45) NOT NULL,
+  `StudentFirstName` VARCHAR(45) NOT NULL,
+  `StudentLastName` VARCHAR(45) NULL,
+  `StudentEmail` VARCHAR(45) NOT NULL,
+  `StudentProgram` VARCHAR(45) NOT NULL,
+  `StudentDateofJoin` VARCHAR(45) NOT NULL,
+  `StudentTerm` INT NOT NULL,
+  CHECK (`StudentTerm` >= 1 and `StudentTerm` <= 4),
+  `StudentGPA` FLOAT NULL,
+  
+  CHECK( ((`StudentTerm`=1 and `StudentGPA`=0) or 
+        
+		 (`StudentTerm`>1 and `StudentGPA`>0)) and 
+        
+		 (`StudentGPA` <= 4) and (`StudentTerm` <=4)), 
+        
+UNIQUE INDEX `studentID_UNIQUE` (`Student_Number`),
+PRIMARY KEY (`Student_Number`));
+
+
+
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Course` (
+  `Course_ID` VARCHAR(45) NOT NULL,
+  `CourseName` VARCHAR(45) NULL,
+  UNIQUE INDEX `courseID_UNIQUE` (`Course_ID`),
+  PRIMARY KEY (`Course_ID`));
+
+
+
+CREATE TABLE IF NOT EXISTS `mydb`.`Professor` (
+  `Professor_ID` VARCHAR(45) NOT NULL,
+  `ProfessorFirstName` VARCHAR(45) NOT NULL,
+  `ProfessorLastName` VARCHAR(45) NOT NULL,
+  `ProfessorEmail` VARCHAR(45) NOT NULL,
+  UNIQUE INDEX `professorID_UNIQUE` (`Professor_ID`),
+  PRIMARY KEY (`Professor_ID`));
+
+
+
+CREATE TABLE IF NOT EXISTS `mydb`.`UsernameAndPassword`(
+  `username` VARCHAR(45) NOT NULL,
+  `typeOfUser` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NULL,
+  UNIQUE INDEX `username_UNIQUE` (`username`),
+  CHECK (`typeOfUser` in ('Admin','Professor','Student')),
+  PRIMARY KEY (`username`, `typeOfUser`)
+  
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS `mydb`.`grade` (
+  `Student_Number` VARCHAR(45) NOT NULL,
+  `Professor_Professor_ID` VARCHAR(45) NOT NULL,
+  `Course_ID` VARCHAR(45) NOT NULL,
+  `grade` INT NULL,
+  
+  PRIMARY KEY (`Student_Number`, `Course_ID`),
+  
+  CONSTRAINT `checker` CHECK (grade >=0 and grade <=100),
+  
+  CONSTRAINT `fk_grade_Student`
+    FOREIGN KEY (`Student_Number`)
+    REFERENCES `mydb`.`Student` (`Student_Number`)
+    ON DELETE RESTRICT,
+    
+  CONSTRAINT `fk_grade_Professor1`
+    FOREIGN KEY (`Professor_Professor_ID`)
+    REFERENCES `mydb`.`Professor` (`Professor_ID`)
+    ON DELETE RESTRICT,
+    
+  CONSTRAINT `fk_grade_Course1`
+    FOREIGN KEY (`Course_ID`)
+    REFERENCES `mydb`.`Course` (`Course_ID`)
+    ON DELETE RESTRICT
+    
+    );
+ 
+
+
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765900","Abigail","Abraham","C0765900@mylambton.ca","CSAT","2019-FALL",2,3.36975783186756);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765901","Alexandra","Allan","C0765901@mylambton.ca","CSAT","2019-WINTER",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765902","Alison","Alsop","C0765902@mylambton.ca","CCBT","2019-WINTER",2,2.00548187419092);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765903","Amanda","Anderson","C0765903@mylambton.ca","CCBT","2019-FALL",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765904","Amelia","Arnold","C0765904@mylambton.ca","CCBT","2020-WINTER",3,3.0219605157429);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765905","Amy","Avery","C0765905@mylambton.ca","CSAT","2020-WINTER",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765906","Andrea","Bailey","C0765906@mylambton.ca","CSAT","2019-FALL",2,2.13254569909514);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765907","Angela","Baker","C0765907@mylambton.ca","CSAT","2019-FALL",4,3.23960916173918);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765908","Anna","Ball","C0765908@mylambton.ca","CCBT","2019-FALL",2,2.88860918194949);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765909","Anne","Bell","C0765909@mylambton.ca","CCBT","2019-FALL",3,3.1683491658989);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765910","Audrey","Berry","C0765910@mylambton.ca","CCBT","2019-FALL",4,2.05727091910851);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765911","Ava","Black","C0765911@mylambton.ca","CSAT","2019-FALL",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765912","Bella","Blake","C0765912@mylambton.ca","CSAT","2019-FALL",4,3.00536558145674);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765913","Bernadette","Bond","C0765913@mylambton.ca","CSAT","2019-FALL",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765914","Carol","Bower","C0765914@mylambton.ca","CCBT","2018-WINTER",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765915","Caroline","Brown","C0765915@mylambton.ca","CCBT","2020-SUMMER",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765916","Carolyn","Buckland","C0765916@mylambton.ca","CCBT","2019-FALL",2,2.48284357557717);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765917","Chloe","Burgess","C0765917@mylambton.ca","CSAT","2019-WINTER",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765918","Claire","Butler","C0765918@mylambton.ca","CSAT","2019-WINTER",4,3.9473660356777);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765919","Deirdre","Cameron","C0765919@mylambton.ca","CSAT","2019-FALL",4,3.26372501071201);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765920","Diana","Campbell","C0765920@mylambton.ca","CCBT","2020-WINTER",4,2.34441690709972);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765921","Diane","Carr","C0765921@mylambton.ca","CCBT","2020-WINTER",3,3.66153611698947);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765922","Donna","Chapman","C0765922@mylambton.ca","CCBT","2019-FALL",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765923","Dorothy","Churchill","C0765923@mylambton.ca","CSAT","2019-FALL",3,1.65288839287093);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765924","Elizabeth","Clark","C0765924@mylambton.ca","CSAT","2019-FALL",2,3.46948159489648);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765925","Ella","Clarkson","C0765925@mylambton.ca","CSAT","2019-FALL",2,1.60939174604962);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765926","Emily","Coleman","C0765926@mylambton.ca","CCBT","2019-FALL",3,2.41429075318282);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765927","Emma","Cornish","C0765927@mylambton.ca","CCBT","2019-FALL",4,2.10248405199571);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765928","Faith","Davidson","C0765928@mylambton.ca","CCBT","2019-FALL",2,3.43734077621529);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765929","Felicity","Davies","C0765929@mylambton.ca","CSAT","2019-FALL",4,3.04178097638221);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765930","Fiona","Dickens","C0765930@mylambton.ca","CSAT","2018-WINTER",2,1.74657412670092);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765931","Gabrielle","Dowd","C0765931@mylambton.ca","CSAT","2019-FALL",4,3.98199371602557);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765932","Grace","Duncan","C0765932@mylambton.ca","CCBT","2019-WINTER",4,2.35534619212875);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765933","Hannah","Dyer","C0765933@mylambton.ca","CCBT","2019-WINTER",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765934","Heather","Edmunds","C0765934@mylambton.ca","CCBT","2019-FALL",2,2.28935790406407);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765935","Irene","Ellison","C0765935@mylambton.ca","CSAT","2020-WINTER",4,2.9441051471715);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765936","Jan","Ferguson","C0765936@mylambton.ca","CSAT","2020-WINTER",2,3.25387267109131);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765937","Jane","Fisher","C0765937@mylambton.ca","CSAT","2019-FALL",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765938","Jasmine","Forsyth","C0765938@mylambton.ca","CCBT","2019-FALL",3,2.00107106248575);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765939","Jennifer","Fraser","C0765939@mylambton.ca","CCBT","2019-FALL",2,3.19129023641405);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765940","Jessica","Gibson","C0765940@mylambton.ca","CCBT","2019-FALL",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765941","Joan","Gill","C0765941@mylambton.ca","CSAT","2019-FALL",2,1.98824609384579);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765942","Joanne","Glover","C0765942@mylambton.ca","CSAT","2019-FALL",2,3.37857687279081);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765943","Julia","Graham","C0765943@mylambton.ca","CSAT","2019-FALL",4,3.03327605654822);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765944","Karen","Grant","C0765944@mylambton.ca","CCBT","2019-FALL",3,2.46169314891266);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765945","Katherine","Gray","C0765945@mylambton.ca","CCBT","2018-WINTER",2,3.66981633749031);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765946","Kimberly","Greene","C0765946@mylambton.ca","CCBT","2019-FALL",2,1.70124128351045);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765947","Kylie","Hamilton","C0765947@mylambton.ca","CSAT","2019-WINTER",3,3.72938841690802);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765948","Lauren","Hardacre","C0765948@mylambton.ca","CSAT","2019-WINTER",1,0);
+INSERT INTO `mydb`.`Student`(Student_Number, StudentFirstName, StudentLastName, StudentEmail, StudentProgram, StudentDateofJoin, StudentTerm, StudentGPA) VALUES ("C0765949","Leah","Harris","C0765949@mylambton.ca","CSAT","2019-FALL",4,3.43340359404413);
+
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2120","Math");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2121","Python");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2122","Java");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2123","PHP");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2124","DesignArc");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2125","Safety");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2126","JavaScript");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2127","R");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2128","C");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2129","C++");
+INSERT INTO `mydb`.`Course` (Course_ID, CourseName) VALUES ("CSD2130","C#");
+
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765901","Lambert","Ross","LambertRoss@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765902","Langdon","Russell","LangdonRussell@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765903","Lawrence","Rutherford","LawrenceRutherford@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765904","Lee","Sanderson","LeeSanderson@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765905","Lewis","Scott","LewisScott@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765906","Lyman","Sharp","LymanSharp@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765907","MacDonald","Short","MacDonaldShort@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765908","Mackay","Simpson","MackaySimpson@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765909","Mackenzie","Skinner","MackenzieSkinner@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765910","MacLeod","Slater","MacLeodSlater@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765911","Manning","Smith","ManningSmith@cestarcollege.ca");
+INSERT INTO `mydb`.`Professor` (Professor_ID, ProfessorFirstName, ProfessorLastName, ProfessorEmail) VALUES ("P0765912","Marshall","Springer","MarshallSpringer@cestarcollege.ca");
+
+
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("admin","Admin","admin1993");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765901","Professor","ProfessorP0765901");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765902","Professor","ProfessorP0765902");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765903","Professor","ProfessorP0765903");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765904","Professor","ProfessorP0765904");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765905","Professor","ProfessorP0765905");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765906","Professor","ProfessorP0765906");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765907","Professor","ProfessorP0765907");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765908","Professor","ProfessorP0765908");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765909","Professor","ProfessorP0765909");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765910","Professor","ProfessorP0765910");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765911","Professor","ProfessorP0765911");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("P0765912","Professor","ProfessorP0765912");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765900","Student","AbigailAbraham");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765901","Student","AlexandraAllan");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765902","Student","AlisonAlsop");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765903","Student","AmandaAnderson");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765904","Student","AmeliaArnold");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765905","Student","AmyAvery");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765906","Student","AndreaBailey");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765907","Student","AngelaBaker");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765908","Student","AnnaBall");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765909","Student","AnneBell");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765910","Student","AudreyBerry");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765911","Student","AvaBlack");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765912","Student","BellaBlake");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765913","Student","BernadetteBond");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765914","Student","CarolBower");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765915","Student","CarolineBrown");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765916","Student","CarolynBuckland");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765917","Student","ChloeBurgess");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765918","Student","ClaireButler");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765919","Student","DeirdreCameron");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765920","Student","DianaCampbell");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765921","Student","DianeCarr");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765922","Student","DonnaChapman");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765923","Student","DorothyChurchill");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765924","Student","ElizabethClark");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765925","Student","EllaClarkson");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765926","Student","EmilyColeman");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765927","Student","EmmaCornish");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765928","Student","FaithDavidson");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765929","Student","FelicityDavies");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765930","Student","FionaDickens");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765931","Student","GabrielleDowd");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765932","Student","GraceDuncan");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765933","Student","HannahDyer");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765934","Student","HeatherEdmunds");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765935","Student","IreneEllison");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765936","Student","JanFerguson");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765937","Student","JaneFisher");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765938","Student","JasmineForsyth");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765939","Student","JenniferFraser");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765940","Student","JessicaGibson");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765941","Student","JoanGill");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765942","Student","JoanneGlover");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765943","Student","JuliaGraham");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765944","Student","KarenGrant");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765945","Student","KatherineGray");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765946","Student","KimberlyGreene");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765947","Student","KylieHamilton");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765948","Student","LaurenHardacre");
+INSERT INTO `mydb`.`usernameandpassword` (`username`, `typeOfUser`, `password`) VALUES ("C0765949","Student","LeahHarris");
+
+
+
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765900","P0765901","CSD2120",66);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765900","P0765902","CSD2121",83);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765900","P0765903","CSD2122",31);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765900","P0765904","CSD2123",24);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765901","P0765901","CSD2120",66);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765901","P0765902","CSD2121",83);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765901","P0765903","CSD2122",31);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765901","P0765904","CSD2123",24);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765902","P0765905","CSD2124",99);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765902","P0765906","CSD2125",84);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765902","P0765907","CSD2126",58);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765902","P0765901","CSD2127",99);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765902","P0765902","CSD2128",44);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765904","P0765905","CSD2124",99);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765904","P0765906","CSD2125",84);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765904","P0765907","CSD2126",58);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765904","P0765901","CSD2127",99);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765904","P0765902","CSD2128",44);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765904","P0765903","CSD2129",36);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765904","P0765904","CSD2130",56);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765904","P0765905","CSD2121",69);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765905","P0765906","CSD2125",84);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765906","P0765907","CSD2126",58);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765907","P0765901","CSD2127",99);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765908","P0765902","CSD2128",44);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765909","P0765903","CSD2129",36);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765910","P0765904","CSD2130",56);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765911","P0765905","CSD2121",69);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765912","P0765906","CSD2122",40);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765913","P0765907","CSD2123",27);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765914","P0765901","CSD2120",68);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765915","P0765902","CSD2121",92);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765916","P0765903","CSD2122",85);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765917","P0765904","CSD2123",21);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765918","P0765905","CSD2124",29);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765919","P0765906","CSD2125",83);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765920","P0765907","CSD2126",100);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765921","P0765901","CSD2127",50);
+INSERT INTO `mydb`.`grade`(`Student_Number`,`Professor_Professor_ID`,`Course_ID`,`grade`) VALUES ("C0765922","P0765902","CSD2128",95);
+
+
+
+
+
